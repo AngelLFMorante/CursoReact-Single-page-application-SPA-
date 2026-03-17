@@ -6,7 +6,7 @@ import { HeroPage } from "@/heroes/pages/hero/HeroPage";
 import { HomePage } from "@/heroes/pages/home/HomePage";
 // import { SearchPage } from "@/heroes/pages/search/SearchPage";
 import { lazy } from "react";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 
 
 // Lazy load 
@@ -28,13 +28,17 @@ export const appRouter = createBrowserRouter([
                 element: <HomePage />
             },
             {
-                path: 'heroes',
+                path: 'heroes/:idSlug',
                 element: <HeroPage />
             },
             {
                 path: 'search',
                 element: <SearchPage />
             },
+            {
+                path: '*',
+                element: <Navigate to='/' />
+            }
         ]
     },
     {

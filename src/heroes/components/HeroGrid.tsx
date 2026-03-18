@@ -1,4 +1,4 @@
-import type { Hero } from "../types/heroes.interface"
+import type { Hero } from "../types/hero.interface"
 import { HeroGridCard } from "./HeroGridCard"
 
 interface Props {

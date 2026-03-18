@@ -5,11 +5,9 @@ import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { useMemo } from "react"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
-import { useQuery } from "@tanstack/react-query"
-import { getHeroesByPageAction } from "@/heroes/actions/get-heroes-by-page.action"
 import { useSearchParams } from "react-router"
-
-
+import { useHeroSummary } from "@/heroes/hooks/useHeroSummary"
+import { usePaginatedHero } from "@/heroes/hooks/usePaginatedHero"
 
 
 export const HomePage = () => {
@@ -20,6 +18,7 @@ export const HomePage = () => {
     const activeTab = searchParams.get('tab') ?? 'all';
     const page = searchParams.get('page') ?? '1';
     const limit = searchParams.get('limit') ?? '6';
+    const category = searchParams.get('category') ?? 'all';
     //con el memo ya podemos validar y asi no rompemos los params si alguien intenta manipularlo.
     const selectedTab = useMemo(() => {
         const validTabs = ['all', 'favorites', 'heroes', 'villains'];
@@ -36,13 +35,16 @@ export const HomePage = () => {
 
     //  con tanstack no hace falta que usemos el useEffect es de lo mejor
     // queryFn es lo que queremos lanzar a peticion
-    const { data: heroesResponse } = useQuery({
-        queryKey: ['heroes'],
-        queryFn: () => getHeroesByPageAction(+page, +limit),
-        staleTime: 1000 * 60 * 5, // por 5 minutos mantenemos fresca y no va hacer peticion de nuevo..
-    })
+    //lo llevamos a un hook : usePaginatedHero
+    // const { data: heroesResponse } = useQuery({
+    //     queryKey: ['heroes', { page, limit }], //esto lo almacena en la caché 
+    //     queryFn: () => getHeroesByPageAction(+page, +limit),
+    //     staleTime: 1000 * 60 * 5, // por 5 minutos mantenemos fresca y no va hacer peticion de nuevo..
+    // });
 
-    console.log({ heroesResponse });
+    const { data: heroesResponse } = usePaginatedHero(+page, +limit, category);
+
+    const { data: summary } = useHeroSummary();
 
     return (
         <>
@@ -70,10 +72,12 @@ export const HomePage = () => {
                         <TabsTrigger value="all"
                             onClick={() => setSearchParams((prev) => {
                                 prev.set('tab', 'all');
+                                prev.set('category', 'all');
+                                prev.set('page', '1');
                                 return prev;
                             })}
                         >
-                            All Characters (16)
+                            All Characters ({summary?.totalHeroes})
                         </TabsTrigger>
                         <TabsTrigger value="favorites" className="flex items-center gap-2"
                             onClick={() => setSearchParams((prev) => {
@@ -86,17 +90,21 @@ export const HomePage = () => {
                         <TabsTrigger value="heroes"
                             onClick={() => setSearchParams((prev) => {
                                 prev.set('tab', 'heroes');
+                                prev.set('category', 'hero');
+                                prev.set('page', '1');
                                 return prev;
                             })}
                         >
-                            Heroes (12)</TabsTrigger>
+                            Heroes ({summary?.heroCount})</TabsTrigger>
                         <TabsTrigger value="villains"
                             onClick={() => setSearchParams((prev) => {
                                 prev.set('tab', 'villains');
+                                prev.set('category', 'villain');
+                                prev.set('page', '1');
                                 return prev;
                             })}
                         >
-                            Villains (2)
+                            Villains ({summary?.villainCount})
                         </TabsTrigger>
                     </TabsList>
 
@@ -112,12 +120,12 @@ export const HomePage = () => {
                     <TabsContent value="heroes">
                         {/* Muestra todos los heroes */}
                         <h1>Heroes</h1>
-                        < HeroGrid heroes={[]} />
+                        < HeroGrid heroes={heroesResponse?.heroes ?? []} />
                     </TabsContent>
                     <TabsContent value="villains">
                         {/* Muestra todos los villanos */}
                         <h1>Villanos</h1>
-                        < HeroGrid heroes={[]} />
+                        < HeroGrid heroes={heroesResponse?.heroes ?? []} />
                     </TabsContent>
                 </Tabs >
 
@@ -125,7 +133,7 @@ export const HomePage = () => {
                 {/* < HeroGrid /> */}
 
                 {/* Pagination */}
-                <CustomPagination totalPages={8} />
+                <CustomPagination totalPages={heroesResponse?.pages ?? 1} />
             </>
         </>
     )

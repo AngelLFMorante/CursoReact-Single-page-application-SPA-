@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Heart, Eye, Zap, Brain, Gauge, Shield } from "lucide-react"
-import type { Hero } from "../types/heroes.interface"
+import type { Hero } from "../types/hero.interface"
 import { useNavigate } from "react-router"
 
 

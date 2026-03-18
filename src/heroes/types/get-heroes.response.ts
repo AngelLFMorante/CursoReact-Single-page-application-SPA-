@@ -1,4 +1,4 @@
-import type { Hero } from "./heroes.interface";
+import type { Hero } from "./hero.interface";
 
 
 export interface HeroesResponse {

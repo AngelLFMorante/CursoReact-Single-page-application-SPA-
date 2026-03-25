@@ -2,18 +2,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CustomJumbotron } from "@/components/custom/CustomJumbotron"
 import { HeroStats } from "@/heroes/components/HeroStats"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
 import { useSearchParams } from "react-router"
 import { useHeroSummary } from "@/heroes/hooks/useHeroSummary"
 import { usePaginatedHero } from "@/heroes/hooks/usePaginatedHero"
+import { FavoriteHeroContext } from "@/heroes/context/FAvoriteHeroContext"
 
 
 export const HomePage = () => {
 
     //para tener parametros en la url
     const [searchParams, setSearchParams] = useSearchParams();
+
+    //favorites 
+    const { favoriteCount, favorites } = use(FavoriteHeroContext)
 
     const activeTab = searchParams.get('tab') ?? 'all';
     const page = searchParams.get('page') ?? '1';
@@ -85,7 +89,7 @@ export const HomePage = () => {
                                 return prev;
                             })}
                         >
-                            Favorites (3)
+                            Favorites ({favoriteCount})
                         </TabsTrigger>
                         <TabsTrigger value="heroes"
                             onClick={() => setSearchParams((prev) => {
@@ -114,8 +118,7 @@ export const HomePage = () => {
                     </TabsContent>
                     <TabsContent value="favorites">
                         {/* Muestra todos los favoritos */}
-                        <h1>Favoritos</h1>
-                        < HeroGrid heroes={[]} />
+                        < HeroGrid heroes={favorites} />
                     </TabsContent>
                     <TabsContent value="heroes">
                         {/* Muestra todos los heroes */}
@@ -133,7 +136,12 @@ export const HomePage = () => {
                 {/* < HeroGrid /> */}
 
                 {/* Pagination */}
-                <CustomPagination totalPages={heroesResponse?.pages ?? 1} />
+                {
+                    selectedTab !== 'favorites' && (
+                        <CustomPagination totalPages={heroesResponse?.pages ?? 1} />
+                    )
+                }
+
             </>
         </>
     )

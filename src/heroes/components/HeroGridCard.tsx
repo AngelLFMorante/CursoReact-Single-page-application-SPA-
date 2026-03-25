@@ -6,7 +6,7 @@ import { Heart, Eye, Zap, Brain, Gauge, Shield } from "lucide-react"
 import type { Hero } from "../types/hero.interface"
 import { useNavigate } from "react-router"
 import { use } from "react"
-import { FavoriteHeroContext } from '../context/FavoriteHeroContext';
+import { FavoriteHeroContext } from '../context/FAvoriteHeroContext';
 
 
 

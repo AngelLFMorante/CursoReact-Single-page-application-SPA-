@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router"
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu"
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "../ui/navigation-menu"
 import { cn } from "@/lib/utils";
 
 

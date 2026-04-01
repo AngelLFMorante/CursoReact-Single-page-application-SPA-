@@ -2,13 +2,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
 import { Filter, Grid, Plus, Search, SortAsc } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useSearchParams } from 'react-router'
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
-    AccordionTrigger,
 } from "@/components/ui/accordion"
 
 export const SearchControls = () => {

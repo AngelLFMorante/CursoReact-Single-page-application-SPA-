@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useHeroSummary } from '../hooks/useHeroSummary';
 import type { SummaryInformationResponse } from "../types/summary-information.response";
-import { FavoriteHeroContext, FavoriteHeroProvider } from "../context/FAvoriteHeroContext";
+import { FavoriteHeroProvider } from "../context/FAvoriteHeroContext";
 
 
 vi.mock('../hooks/useHeroSummary');

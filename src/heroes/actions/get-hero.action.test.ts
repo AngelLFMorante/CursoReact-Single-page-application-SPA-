@@ -2,8 +2,6 @@ import { describe, expect, test } from "vitest";
 import { getHeroAction } from "./get-hero.action";
 
 
-const BASE_URL = import.meta.env.VITE_API_URL;
-
 describe('getHeroAction', () => {
 
     test('should fetch hero data and return with complete image url', async () => {

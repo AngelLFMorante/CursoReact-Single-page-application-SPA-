@@ -47,7 +47,7 @@ describe('getHeroesByPageAction', () => {
         heroesApiMock.onGet('/').reply(200, responseObject);
         heroesApiMock.resetHistory();
 
-        const result = await getHeroesByPageAction('abc' as unknown as number);
+        await getHeroesByPageAction('abc' as unknown as number);
 
         const params = heroesApiMock.history.get[0].params;
         console.log(params);
